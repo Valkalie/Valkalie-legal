@@ -169,8 +169,8 @@ Valkalie Bot ให้บริการ **"ตามสภาพที่เป
 
 หากมีคำถาม ข้อสงสัย หรือต้องการใช้สิทธิ์ด้านข้อมูล กรุณาติดต่อ:
 
-- **Discord:** `[hoyorai]`
-- **Support Server:** `[https://discord.gg/GXPgH3AZCe]`
+- **Discord:** [hoyorai]
+- **Support Server:** [https://discord.gg/GXPgH3AZCe]
 - **GitHub Issues:** [github.com/Valkalie/Valkalie-legal/issues](https://github.com/Valkalie/Valkalie-legal/issues)
 
 ---
