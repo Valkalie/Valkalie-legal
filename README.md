@@ -166,6 +166,15 @@ Valkalie Bot ให้บริการ **"ตามสภาพที่เป
 - **Activity statistics:** message counts and timestamps (NOT message content), voice-session durations, emojis used, games played (via Presence), XP/level data
 - **Reports:** report submissions created by users
 - **Premium & payments:** premium subscription status, coin balances, and transaction records (amount, timestamp, reference ID)
+### 🔑 Privileged Discord Intents We Request
+
+Valkalie Bot requests the following privileged Gateway Intents from Discord to power specific features:
+
+| Intent | Purpose |
+|--------|---------|
+| **Server Members Intent** | Detect member joins/leaves to send automated welcome messages, detect bot-farm attacks (bot-to-human member ratio), and track join/leave statistics |
+| **Presence Intent** | View members' current game/activity status to power the Game Activity stat shown in `/stats` |
+| **Message Content Intent** | Used only to read owner-restricted prefix commands (e.g. `!reload`, `!status`) for bot administration. We do **not** read, log, or process the content of regular users' messages |
 
 ### 2. Data We Do NOT Store
 - Message content
