@@ -1,6 +1,6 @@
 # Valkalie Bot — Privacy Policy & Terms of Service
 
-**Effective date:** 7 October 2026
+**Effective date:** 12 October 2026
 **Contact:** Discord user `hoyorai` · Support server: https://discord.gg/GXPgH3AZCe
 
 Valkalie is a multi-purpose Discord community management bot. This page explains what data Valkalie collects, why it collects it, who else processes it, how long it is kept, and how you can opt out or have it deleted.
@@ -10,7 +10,12 @@ Valkalie is a multi-purpose Discord community management bot. This page explains
 ## 1. Data we collect
 
 ### Server data
-- Server, channel, and role IDs used to store each server's settings: welcome/leave messages, forms, embeds, sticky messages, scheduled actions, VarTable values and automation rules, mini-game setups, YouTube/Twitch notifications, server stat counters, XP settings, the XP shop, and security settings.
+- The roles and members a server's owner or admins allow to manage each Valkalie feature.
+- **Feature activity counts:** how many times each server's embeds, notifications, and scheduled actions ran or failed in each hour. These are totals only. They do not record who triggered them.
+- Server, channel, and role IDs used to store each server's settings: welcome/leave messages, forms, embeds, sticky messages, scheduled actions, VarTable values and automation rules, mini-game setups, YouTube/Twitch notifications, server stat counters, XP settings, the XP shop, security settings, and server activity log settings.
+- **Server activity logs (only in servers that turn them on):** Valkalie posts voice-channel joins, leaves, and moves (with how long the member stayed); channel changes (including which permissions changed); and member changes (nickname, username, display name, avatar, roles, and timeouts) to a channel the server's admins choose. Each entry says where the change came from: a Valkalie feature, Discord itself (for example a server boost), another bot, an admin, or the member. When the audit log shows who made a change and why, that is included. For an avatar change, Valkalie posts the old and new avatar as one image in that channel. Discord deletes an old avatar as soon as it is changed, so in servers with the avatar log turned on, Valkalie keeps a copy of the avatars of members who recently chatted, joined a voice channel, or joined the server (in memory only, at most 1,500 images, never written to disk). Valkalie does not keep a copy. The log exists only as messages in that server's channel.
+- **Message log (only in servers that turn it on):** when a message is deleted or edited, Valkalie posts its earlier text and attachment names, who sent it, and who deleted it, to the staff log channel. When many messages are deleted at once, it posts them as a text file. It also logs who pinned or unpinned a message. To do this, Valkalie holds recent messages from that server in memory (see section 2). They are never written to disk.
+- **Invite use (only in servers that turn on the Invite Tracker or invite reward roles):** Valkalie reads the server's invite list (invite code, who created it, and how many times it was used) to tell which invite a new member used. The invite list is held in memory only. Valkalie also records who invited each new member (the inviter's user ID, the invite code, and the time). It uses this record to count how many invited members are still in the server and to give or remove the server's invite reward roles. The record is deleted when the invited member leaves the server.
 - A backup of the server's channel and role structure (names, permissions, positions). Valkalie uses it to restore the server after a raid or nuke. It never includes message content.
 - **Images used in embeds.** When an admin adds an image to an embed, Valkalie downloads it and re-uploads a copy to a private channel the bot owns, so the image keeps working after Discord's links expire. The original image URL is stored with the copy.
 - The user who added Valkalie to a server, read from the audit log. This is used for abuse prevention.
@@ -25,15 +30,15 @@ Valkalie is a multi-purpose Discord community management bot. This page explains
 - **XP and levels:** XP totals, levels, point balances, custom currency balances, XP shop orders, and whether you have turned off level-up DMs.
 - **Form submissions:** your answers to forms a server admin creates (for example reports or applications), together with your user ID and username. For a report, the reported member's ID and username are stored too.
 - **Security records:**
-  - If the anti-spam or anti-link system acts on your account, Valkalie stores a strike count and the time of your last strike for that server.
-  - Each server's security log keeps its 15 most recent events. Each event lists the member's ID, the channel, and the reason, which can include the domain of a blocked link.
+  - If the anti-spam, anti-link, or word filter system acts on your account, Valkalie stores how many times that system has acted on you, and when it last did, for that server. Each system keeps its own count.
+  - Each server's security log keeps its 15 most recent events. Each event lists the member's ID, the channel, and the reason. The reason can include the domain of a blocked link or the blocked word that was found.
 - **Mini-game results:** for each finished game, your side and role, whether you won, whether you survived, the number of players, and the date. If the server gives game rewards, the daily total you received is also stored.
 - **Support tickets:** what you write when you open a ticket with `/valkalie_support`. It is sent to a staff channel in the Valkalie support server.
 - **Donations:** your user ID, display name, amount, the bank slip reference number, and the date. See section 4.
 - **Error reports and logs:** if a command fails, the developer receives a private report with your username, the server name, the command, and technical error details. The bot's own log files also contain user and server IDs and names.
 
 ### What we do NOT store
-- **The text of your messages.** Message content is read in memory only (section 2) and is never written to disk. The only exception is the domain of a link that the security system blocks, which is kept in that server's security log.
+- **The text of your messages.** Message content is read in memory only (section 2) and is never written to disk. The only exceptions are the domain of a link that the security system blocks and the blocked word that the word filter finds. Both are kept in that server's security log. In servers that turn on the message log, recent messages are held in memory for a limited time, and the text of a deleted or edited message is posted to that server's staff log channel.
 - Passwords or Discord login credentials.
 - Your IP address.
 - Images of bank-transfer slips. They are sent to SlipOK for verification and are not kept.
@@ -45,13 +50,15 @@ All data is stored in databases on the developer's own server. No outside databa
 
 ## 2. How Valkalie uses message content
 
-Valkalie uses Discord's Message Content intent for the features below. In each case the text is processed in memory and then discarded.
+Valkalie uses Discord's Message Content intent for the features below. In each case the text is processed in memory and is never written to disk. The message log is the only feature that holds message text for longer than it takes to process it. It holds it in memory, for a limited time (see the table).
 
 | Feature | What it reads | What it keeps |
 |---|---|---|
-| **Anti-Link / anti-scam** | Links in messages. They are checked against a blocklist, for look-alike and punycode domains, and with online URL reputation services (section 3). | If a link is malicious, the message is deleted, moderators are alerted with the reason, and a strike is recorded. The security log keeps the member ID, the channel, and the blocked domain. Nothing else from the message is kept. |
-| **Anti-Spam / cross-post detection** | A one-way hash of the message (text plus attachment names and sizes), compared against your recent messages to spot the same content posted in many channels. Also how many members and roles the message mentions, and whether it combines `@everyone`/`@here` with a link. | The hash is held in memory for about two minutes. Nothing is written to disk except the strike and the security-log entry. |
-| **Text-to-Speech (TTS)** | Messages in the **one** text channel a TTS session is started for, only while the session is running. If the "read names" option is on, the sender's display name is read too. | Nothing. The generated audio file is deleted after it plays. |
+| **Anti-Link / anti-scam** | Links in messages. They are checked against a blocklist, for look-alike and punycode domains, and with online URL reputation services (section 3). | If a link is malicious, the message is deleted, moderators are alerted with the reason, and the offense is counted. The security log keeps the member ID, the channel, and the blocked domain. Nothing else from the message is kept. |
+| **Word filter** | Whether your message contains a word or phrase on the server's blocked list, in servers where an admin has turned it on | If a blocked word is found, the message is deleted and the offense is counted. The security log keeps the member ID, the channel, and the blocked word that was found. Nothing else from the message is kept. |
+| **Anti-Spam / cross-post detection** | A one-way hash of the message (text plus attachment names and sizes), compared against your recent messages to spot the same content posted in many channels. Also how many members and roles the message mentions, and whether it combines `@everyone`/`@here` with a link. | The hash is held in memory for about two minutes. Nothing is written to disk except the offense count and the security-log entry. |
+| **Text-to-Speech (TTS)** | Messages in the **one** text channel a TTS session is started for, only while the session is running. If the "read names" option is on, the sender's display name is read too. | Nothing. The generated audio is held in memory only while it plays. |
+| **Message log** | Messages in servers where an admin has turned on the message log | The latest 5,000 messages per server, held **in memory only** for up to 3 days, so that a deleted or edited message's earlier text and attachment names can be posted to the server's staff log channel. They are cleared when the message log is turned off or the bot restarts. Messages from Valkalie itself are not kept. |
 | **Emoji statistics** | Emojis in your message | The emoji and a timestamp. |
 | **Stats-card trigger word** | Whether your message exactly matches a trigger word an admin has set | Nothing. |
 
@@ -97,6 +104,7 @@ If you do not want to appear on the leaderboard, contact us (section 8).
 - **Level-up DMs:** use the opt-out button on any level-up DM.
 - **Text-to-Speech:** TTS only reads the channel a session is started for, and only while the session is running. If you do not want to be read aloud, do not post in that channel during a session.
 - **Security scanning and command-usage records:** anti-spam, anti-link, and command-usage records cover the whole bot, so individual users cannot opt out. None of them store message content. You can still ask us to delete your records (section 7).
+- **Server activity logs:** these are turned on by each server's admins for moderation, so individual members cannot opt out. Valkalie keeps no copy. To have log messages removed, ask that server's admins.
 
 ---
 
@@ -106,9 +114,14 @@ If you do not want to appear on the leaderboard, contact us (section 8).
 |---|---|
 | Message counts, voice sessions, emoji usage, game activity | **Deleted automatically after 90 days** |
 | Command usage records | **Deleted automatically after 180 days** |
+| Feature activity counts | Hourly for 30 days, then combined into daily totals and **deleted after 365 days** |
 | Cross-post detection hashes | About 2 minutes, in memory only |
+| Server activity logs | Not stored by Valkalie. They exist only as messages in the channel the server chose. |
+| Message text for the message log | In memory only: up to 3 days and at most 5,000 messages per server. Cleared when the message log is turned off or the bot restarts. |
+| Invite use counts (Invite Tracker) | In memory only, while the bot is running |
+| Who invited each member (Invite Tracker) | Until the invited member leaves the server, or the server's data is removed |
 | Security log | The 15 most recent events per server. Older events are removed as new ones are added. |
-| Security strikes | Your count starts again from zero if you get no new strike within a period the server sets (30 days by default). The record itself stays until it is deleted (see the row below). |
+| Security offense counts | Each system's count starts again from zero if you get no new offense in that system within a period the server sets (30 days by default). The record itself stays until it is deleted (see the row below). |
 | Embed button-click records | Until the embed is deleted |
 | Server join dates, stats-card settings, server settings, XP, forms, game results, donations, and other records | Until a server admin removes them, you ask us to delete them, or the developer removes the server's data |
 | Error reports and bot log files | Until the developer clears them |
