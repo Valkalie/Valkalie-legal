@@ -1,6 +1,6 @@
 # Valkalie Bot — Privacy Policy & Terms of Service
 
-**Effective date:** 12 October 2026
+**Effective date:** 15 October 2026
 **Contact:** Discord user `hoyorai` · Support server: https://discord.gg/GXPgH3AZCe
 
 Valkalie is a multi-purpose Discord community management bot. This page explains what data Valkalie collects, why it collects it, who else processes it, how long it is kept, and how you can opt out or have it deleted.
@@ -13,21 +13,23 @@ Valkalie is a multi-purpose Discord community management bot. This page explains
 - The roles and members a server's owner or admins allow to manage each Valkalie feature.
 - **Feature activity counts:** how many times each server's embeds, notifications, and scheduled actions ran or failed in each hour. These are totals only. They do not record who triggered them.
 - Server, channel, and role IDs used to store each server's settings: welcome/leave messages, forms, embeds, sticky messages, scheduled actions, VarTable values and automation rules, mini-game setups, YouTube/Twitch notifications, server stat counters, XP settings, the XP shop, security settings, and server activity log settings.
-- **Server activity logs (only in servers that turn them on):** Valkalie posts voice-channel joins, leaves, and moves (with how long the member stayed); channel changes (including which permissions changed); and member changes (nickname, username, display name, avatar, roles, and timeouts) to a channel the server's admins choose. Each entry says where the change came from: a Valkalie feature, Discord itself (for example a server boost), another bot, an admin, or the member. When the audit log shows who made a change and why, that is included. For an avatar change, Valkalie posts the old and new avatar as one image in that channel. Discord deletes an old avatar as soon as it is changed, so in servers with the avatar log turned on, Valkalie keeps a copy of the avatars of members who recently chatted, joined a voice channel, or joined the server (in memory only, at most 1,500 images, never written to disk). Valkalie does not keep a copy. The log exists only as messages in that server's channel.
+- **Server activity logs (only in servers that turn them on):** Valkalie posts voice-channel joins, leaves, and moves (with how long the member stayed); channel changes (including which permissions changed); and member changes (nickname, username, display name, avatar, roles, and timeouts) to a channel the server's admins choose. A separate shop log can also post XP shop activity: purchases, deliveries, refunds, transfers between members (with the note the sender wrote), balance changes made by admins, and changes to the shop's items (added, removed, restocked, sold out, opened or closed for sale, and price changes). Each entry says where the change came from: a Valkalie feature, Discord itself (for example a server boost), another bot, an admin, or the member. When the audit log shows who made a change and why, that is included. For an avatar change, Valkalie posts the old and new avatar as one image in that channel. Discord deletes an old avatar as soon as it is changed, so in servers with the avatar log turned on, Valkalie keeps a copy of the avatars of members who recently chatted, joined a voice channel, or joined the server (in memory only, at most 1,500 images, never written to disk). Valkalie does not keep a copy. The log exists only as messages in that server's channel.
 - **Message log (only in servers that turn it on):** when a message is deleted or edited, Valkalie posts its earlier text and attachment names, who sent it, and who deleted it, to the staff log channel. When many messages are deleted at once, it posts them as a text file. It also logs who pinned or unpinned a message. To do this, Valkalie holds recent messages from that server in memory (see section 2). They are never written to disk.
 - **Invite use (only in servers that turn on the Invite Tracker or invite reward roles):** Valkalie reads the server's invite list (invite code, who created it, and how many times it was used) to tell which invite a new member used. The invite list is held in memory only. Valkalie also records who invited each new member (the inviter's user ID, the invite code, and the time). It uses this record to count how many invited members are still in the server and to give or remove the server's invite reward roles. The record is deleted when the invited member leaves the server.
 - A backup of the server's channel and role structure (names, permissions, positions). Valkalie uses it to restore the server after a raid or nuke. It never includes message content.
 - **Images used in embeds.** When an admin adds an image to an embed, Valkalie downloads it and re-uploads a copy to a private channel the bot owns, so the image keeps working after Discord's links expire. The original image URL is stored with the copy.
+- **Embed share codes (only when an admin creates one).** When an admin presses 🔗 แชร์โค้ด on an embed, Valkalie stores a copy of that embed under a short code so admins of other servers can import it with `/embed import`. The copy contains the embed's content and settings (including the IDs of roles and channels its buttons use) and is updated each time the admin shares again. The admin can revoke the code at any time, and deleting the embed deletes its code.
 - The user who added Valkalie to a server, read from the audit log. This is used for abuse prevention.
 
 ### User data
 - **User IDs and display names.** These are used wherever a feature needs to show who did something, such as leaderboards, form submissions, and the donor list.
 - **Activity statistics:** message counts with channel and timestamp, voice-channel session durations, emojis used, and server join dates. **We store the fact that a message was sent, not what it said.**
-- **Stats-card settings:** your card's theme, colours, privacy setting, and any custom background image URL you set.
+- **Stats-card settings:** your card's theme, colours, privacy setting, and any custom background image URL you set. They apply in every server unless you set different ones for a particular server.
 - **Game activity from Discord Presence:** the name of the game you are playing and when you started and stopped. Valkalie uses this for per-server stats cards and leaderboards. See *Opting out* below.
 - **Command usage:** each time you use a Valkalie slash command, we record your user ID, the server, the channel, the command name, and the time. This helps us see which features are used and fix problems. Command options and their values are not stored.
 - **Embed interactions:** when you press a button on a Valkalie embed, we record your user ID, which button it was, and the time. Valkalie also records which dropdown rewards you have already claimed (so each one can only be claimed once) and which rooms you own if a button created one for you.
 - **XP and levels:** XP totals, levels, point balances, custom currency balances, XP shop orders, and whether you have turned off level-up DMs.
+- **Transfers:** when you send points or a custom currency to another member, Valkalie records the sender's and recipient's user IDs, the amount, the currency, the optional note, and the time.
 - **Form submissions:** your answers to forms a server admin creates (for example reports or applications), together with your user ID and username. For a report, the reported member's ID and username are stored too.
 - **Security records:**
   - If the anti-spam, anti-link, or word filter system acts on your account, Valkalie stores how many times that system has acted on you, and when it last did, for that server. Each system keeps its own count.
@@ -93,7 +95,7 @@ Valkalie has no paid features or subscriptions. Donations are voluntary support 
 
 If you do not want to appear on the leaderboard, contact us (section 8).
 
-*Older records from a previous paid-features system (wallet balances, transaction history, and agreement acceptances) may still exist in our database. They are kept as financial records and can be deleted on request. That system's `/agreement` command is still available. If you accept an agreement with it, your user ID, the agreement version, and the time are recorded.*
+*Older records from a previous paid-features system (wallet balances, transaction history, and agreement acceptances) may still exist in our database. They are kept as financial records and can be deleted on request. That system's `/agreement` command has been removed, so no new agreement acceptances are recorded.*
 
 ---
 
@@ -134,7 +136,7 @@ Removing Valkalie from your server **stops all further collection** for that ser
 ## 7. Deleting your data
 
 - **Your own game activity:** `/status optout stop_tracking:True` deletes it immediately.
-- **A server's statistics:** a server admin can run `/stats_reset`. It deletes that server's message counts, voice sessions, emoji usage, game activity, member join dates, and stats-card settings.
+- **A server's statistics:** a server admin can run `/stats_reset`. It deletes that server's message counts, voice sessions, emoji usage, game activity, member join dates, and the stats-card settings members made for that server only. Card settings that apply in every server are kept; ask us to delete them (see below).
 - **Everything else:** ask through the support server or message `hoyorai` on Discord. Include your user ID, and the server ID if your request is about one server. We will delete the data within 30 days. Deleted data may stay in the recovery bin for up to 30 more days before it is erased permanently.
 
 Server admins should note that form answers can also be copied into the server's VarTable and shown in embeds. Deleting a form does not remove those copies; the admin has to remove them from the VarTable separately.
